@@ -12,6 +12,7 @@ public class SnakeMouseListener extends MouseMotionAdapter {
 
     public void mouseMoved(MouseEvent e) {
         super.mouseMoved(e);
+        System.out.println("Mouse moved: (" + e.getX() +", " + e.getY() + ")");
         if (e.getY() < snake.getHead().getY()) {
             snake.turnTo(Direction.North);
         } else if (e.getY() > snake.getHead().getY()) {

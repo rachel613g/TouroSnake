@@ -14,11 +14,12 @@ public class SnakeMain {
         Garden garden = new Garden(snake, foodFactory);
         GardenView gardenView = new GardenView(garden);
         SnakeKeyListener snakeKeyListener = new SnakeKeyListener(snake);
+        SnakeMouseListener snakeMouseListener = new SnakeMouseListener(snake);
 
         GardenThread thread = new GardenThread(garden, gardenView);
         thread.start();
 
-        new SnakeFrame(gardenView, snakeKeyListener).setVisible(true);
+        new SnakeFrame(gardenView, snakeKeyListener, snakeMouseListener).setVisible(true);
     }
 
 }
