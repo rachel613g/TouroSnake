@@ -19,5 +19,6 @@ public class SnakeFrame extends JFrame {
 
         add(gardenView, BorderLayout.CENTER);
         addKeyListener(snakeKeyListener);
+        addMouseMotionListener(snakeMouseListener);
     }
 }
