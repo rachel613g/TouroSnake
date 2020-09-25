@@ -22,15 +22,15 @@ public class SnakeMouseListener extends MouseMotionAdapter {
         int mouseY = e.getY();
 
         //mouse move to the right of snake head
-        if (mouseX > headX && mouseY > headY) {
+        if (mouseX > headX) {
             snake.turnTo(Direction.East);
         }
         //mouse moved to the left of snake head
-        else if (mouseX < headX && mouseY < headY) {
+        else if (mouseX < headX) {
             snake.turnTo(Direction.West);
         }
         //mouse moved above snake head
-        else if (mouseY < headY) {
+        if (mouseY < headY) {
             snake.turnTo(Direction.North);
         }
         //mouse moved below snake head
