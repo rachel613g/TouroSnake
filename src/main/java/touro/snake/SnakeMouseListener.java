@@ -37,6 +37,5 @@ public class SnakeMouseListener extends MouseMotionAdapter {
         else if (mouseY > headY) {
             snake.turnTo(Direction.South);
         }
-
     }
 }
