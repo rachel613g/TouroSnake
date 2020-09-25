@@ -3,6 +3,8 @@ package touro.snake;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import static java.lang.Math.abs;
+
 public class SnakeMouseListener extends MouseMotionAdapter {
     private final Snake snake;
 
@@ -11,23 +13,30 @@ public class SnakeMouseListener extends MouseMotionAdapter {
     }
 
     public void mouseMoved(MouseEvent e) {
-        Square head = snake.getHead();
+        //snake head postion multiplied by 10 to be closer 
+        //to scale with mouse position numbers
+        int headX = snake.getHead().getX() * 10;
+        int headY = snake.getHead().getY() * 10;
+        
+        int mouseX = e.getX();
+        int mouseY = e.getY();
 
+        //mouse move to the right of snake head
+        if (mouseX > headX && mouseY > headY) {
+            snake.turnTo(Direction.East);
+        }
+        //mouse moved to the left of snake head
+        else if (mouseX < headX && mouseY < headY) {
+            snake.turnTo(Direction.West);
+        }
         //mouse moved above snake head
-        if (e.getY() < head.getY()) {
+        else if (mouseY < headY) {
             snake.turnTo(Direction.North);
         }
         //mouse moved below snake head
-        else if (e.getY() > head.getY()) {
+        else if (mouseY > headY) {
             snake.turnTo(Direction.South);
         }
-        //mouse move to the left of snake head
-        else if (e.getX() > head.getX()) {
-            snake.turnTo(Direction.East);
-        }
-        //mouse moved to the right of snake head
-        else if (e.getX() < head.getX()) {
-            snake.turnTo(Direction.West);
-        }
+
     }
 }
