@@ -13,29 +13,32 @@ public class SnakeMouseListener extends MouseMotionAdapter {
     }
 
     public void mouseMoved(MouseEvent e) {
-        //snake head postion multiplied by 10 to be closer 
-        //to scale with mouse position numbers
-        int headX = snake.getHead().getX() * 10;
-        int headY = snake.getHead().getY() * 10;
-        
-        int mouseX = e.getX();
-        int mouseY = e.getY();
+        //snake head postion (Square object) multiplied by 10 to be closer
+        //to scale of mouse position (MouseEvent object) numbers
 
-        //mouse move to the right of snake head
-        if (mouseX > headX) {
-            snake.turnTo(Direction.East);
+        //logic taken from https://bit.ly/36Gu7GG
+        int deltaX = e.getX() - (snake.getHead().getX() * 10);
+        int deltaY = e.getY() - (snake.getHead().getY() * 10);
+
+        //go in direction of axis with greater value in slope of line
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX < 0) {
+                snake.turnTo(Direction.West);
+            } else {
+                snake.turnTo(Direction.East);
+            }
         }
-        //mouse moved to the left of snake head
-        else if (mouseX < headX) {
-            snake.turnTo(Direction.West);
+        else if (Math.abs(deltaY) > Math.abs(deltaX)){
+            if (deltaY < 0) {
+                snake.turnTo(Direction.North);
+            }else {
+                snake.turnTo(Direction.South);
+            }
+
+        //else i.e. deltaX == deltaY
+        //   do nothing
         }
-        //mouse moved above snake head
-        if (mouseY < headY) {
-            snake.turnTo(Direction.North);
-        }
-        //mouse moved below snake head
-        else if (mouseY > headY) {
-            snake.turnTo(Direction.South);
-        }
+
+
     }
 }
