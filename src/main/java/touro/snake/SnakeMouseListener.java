@@ -4,7 +4,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
 import static java.lang.Math.abs;
-
+/**
+SnakeMouseListener controls snake turns as direct by input from movement of the mouse.
+ */
 public class SnakeMouseListener extends MouseMotionAdapter {
     private final Snake snake;
 
