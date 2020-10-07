@@ -8,7 +8,7 @@ public class SnakeFrame extends JFrame {
     public SnakeFrame(
             GardenView gardenView,
             SnakeKeyListener snakeKeyListener,
-            SnakeMouseListener snakeMouseListener
+            SnakeMouseListener snakeMouseListener,
             BackgroundSound backgroundSound
     ) throws HeadlessException {
         super();

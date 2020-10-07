@@ -25,11 +25,12 @@ public class SnakeMain {
             Garden garden = new Garden(snake, foodFactory, clip);
             GardenView gardenView = new GardenView(garden);
             SnakeKeyListener snakeKeyListener = new SnakeKeyListener(snake);
+            SnakeMouseListener snakeMouseListener = new SnakeMouseListener(snake);
 
             GardenThread thread = new GardenThread(garden, gardenView);
             thread.start();
             BackgroundSound backgroundSound = new BackgroundSound();
-            new SnakeFrame(gardenView, snakeKeyListener, backgroundSound).setVisible(true);
+            new SnakeFrame(gardenView, snakeKeyListener, snakeMouseListener,backgroundSound).setVisible(true);
         } catch(Exception e) {
             e.printStackTrace();
         }
