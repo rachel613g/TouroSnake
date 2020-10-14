@@ -5,7 +5,7 @@ import java.awt.event.MouseMotionAdapter;
 
 import static java.lang.Math.abs;
 /**
-SnakeMouseListener controls snake turns as direct by input from movement of the mouse.
+SnakeMouseListener controls snake turns as directed by input from movement of the mouse.
  */
 public class SnakeMouseListener extends MouseMotionAdapter {
     private final Snake snake;
@@ -24,26 +24,25 @@ public class SnakeMouseListener extends MouseMotionAdapter {
         final int CELL_SIZE = 10;
         int deltaX = e.getX() - (snake.getHead().getX() * CELL_SIZE);
         int deltaY = e.getY() - (snake.getHead().getY() * CELL_SIZE);
+        int absDeltaX = abs(deltaX);
+        int absDeltaY = abs(deltaY);
 
         //go in direction of axis with greater value in slope of line
-        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (absDeltaX > absDeltaY) {
             if (deltaX < 0) {
                 snake.turnTo(Direction.West);
             } else {
                 snake.turnTo(Direction.East);
             }
         }
-        else if (Math.abs(deltaY) > Math.abs(deltaX)){
+        else if (absDeltaY > absDeltaX){
             if (deltaY < 0) {
                 snake.turnTo(Direction.North);
             }else {
                 snake.turnTo(Direction.South);
             }
-
-        //else i.e. deltaX == deltaY
-        //   do nothing
         }
-
-
+        //else i.e. deltaX == deltaY
+        //do nothing
     }
 }

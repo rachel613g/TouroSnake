@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 public class SnakeMouseListenerTest {
 
     @Test
-    public void mouseMoved_left() {
+    public void mouseMoved_east() {
         //testing the scenario:  deltaX = -30, deltaY = 0
         //given
         Snake snake = mock(Snake.class);
@@ -33,7 +33,7 @@ public class SnakeMouseListenerTest {
     }
 
     @Test
-    public void mouseMoved_right() {
+    public void mouseMoved_west() {
         //testing the scenario:  deltaX = 30, deltaY = 0
         //given
         Snake snake = mock(Snake.class);
@@ -58,7 +58,7 @@ public class SnakeMouseListenerTest {
     }
 
     @Test
-    public void mouseMoved_up() {
+    public void mouseMoved_north() {
         //testing the scenario: deltaX: 0, deltaY = -30
         //given
         Snake snake = mock(Snake.class);
@@ -79,7 +79,7 @@ public class SnakeMouseListenerTest {
     }
 
     @Test
-    public void mouseMoved_down() {
+    public void mouseMoved_south() {
         //testing the scenario: deltaX: 0, deltaY = 30
         //given
         Snake snake = mock(Snake.class);
