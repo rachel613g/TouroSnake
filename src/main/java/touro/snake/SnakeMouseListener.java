@@ -21,8 +21,9 @@ public class SnakeMouseListener extends MouseMotionAdapter {
         //logic taken from https://bit.ly/36Gu7GG
         //determine x and y values of the slope of line between mouse position
         //and snake head position
-        int deltaX = e.getX() - (snake.getHead().getX() * 10);
-        int deltaY = e.getY() - (snake.getHead().getY() * 10);
+        final int CELL_SIZE = 10;
+        int deltaX = e.getX() - (snake.getHead().getX() * CELL_SIZE);
+        int deltaY = e.getY() - (snake.getHead().getY() * CELL_SIZE);
 
         //go in direction of axis with greater value in slope of line
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
