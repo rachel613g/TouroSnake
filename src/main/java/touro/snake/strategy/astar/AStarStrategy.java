@@ -4,50 +4,104 @@ import touro.snake.*;
 import touro.snake.strategy.SnakeStrategy;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class AStarStrategy implements SnakeStrategy {
+    private Snake snake;
+    private List<Node> closed;
+    private List<Node> open;
+    private Node targetNode;
+    private List<Node> shortestPath;
+
     @Override
     public void turnSnake(Snake snake, Garden garden) {
+        this.snake = snake;
 
         Food food = garden.getFood();
         Square head = snake.getHead();
 
-        List<Node> haveVisited = new ArrayList<>();
-        List<Node> haveNotVisited = new ArrayList<>();
+        closed = new ArrayList<>();
+        open = new ArrayList<>();
 
+        Node headNode = new Node(head.getX(), head.getY());
+        open.add(headNode);
 
-        haveNotVisited.add(new Node(head, null, food));
-
-        Node current = haveNotVisited.get(0);
-        while (head != food) {
+        Node current = open.get(0);
+        while (open.size() > 0) {
             //search for lowest fcost
-            for (Node node : haveNotVisited) {
+            for (Node node : open) {
                 if (node.getCost() < current.getCost()) {
                     current = node;
                 }
             }
+            //if reached target
+            if (current.distance(food) == 0)
+                break;
+            //otherwise move current node to closed list
+            open.remove(current);
+            closed.add(current);
 
-            haveNotVisited.remove(current);
-            haveVisited.add(current);
-
-            //figure out why in video he needed below lines but with your
-            //code it never will get called.
-            //path has been found
-            //if (current.distance(food) == 0)
-                //break;
-
-            //expand frontier
+            // and expand frontier
             for (Direction d : Direction.values()) {
                 Square neighborSquare = head.moveTo(d);
-                if (neighborSquare.inBounds()) {
-                    Node neighborNode = new Node(neighborSquare, current, food);
-                    haveNotVisited.add(neighborNode);
+                Node neighborNode = new Node(neighborSquare.getX(),neighborSquare.getY());
+                //neighbor is not traversable or have already visited
+                if (neighborSquare.inBounds() || isInClosed(neighborNode))
+                    continue;
+                //determine if there is a shorter path from start node to neighborNode
+                // other than from current node
+                double movementCost = current.getFromStart() + current.distance(neighborSquare);
+                if (neighborNode.getFromStart() < movementCost || isNotInOpen(neighborNode)) {
+                    neighborNode.setParent(current);
+                    if(isNotInOpen(neighborNode))
+                    {
+                        open.add(neighborNode);
+                    }
                 }
             }
-
+        }
+        //set snake on the shortest path
+        shortestPath.add(current); //null pointer exception here
+        while(current.getParent()!= headNode)
+        {
+            shortestPath.add(current.getParent());
         }
 
+        //there may be something very wrong with this loop...
+        for(int i = shortestPath.size()-1; i <= 0; i--)
+        {
+            current = shortestPath.get(i);
+            Direction direction = head.directionTo(current);
+            snake.turnTo(direction);
+            garden.advance();
+        }
+
+
+    }
+
+    private boolean isNotInOpen(Node neighborNode) {
+        for (Node node : open) {
+            if (node == neighborNode) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isInClosed(Node neighborNode) {
+        for (Node node : closed) {
+            if (node == neighborNode) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean inSnakeBody(Square neighborSquare) {
+        for (Square square : snake.getBody()) {
+            if (neighborSquare == square)
+                return true;
+        }
+        return false;
     }
 }
