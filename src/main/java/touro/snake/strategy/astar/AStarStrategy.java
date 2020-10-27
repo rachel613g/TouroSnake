@@ -17,8 +17,12 @@ public class AStarStrategy implements SnakeStrategy {
     public void turnSnake(Snake snake, Garden garden) {
         this.snake = snake;
 
-        Food food = garden.getFood();
         Square head = snake.getHead();
+        Food food = garden.getFood();
+
+        if (food == null)
+            return;
+        targetNode = new Node(food);
 
         closed = new ArrayList<>();
         open = new ArrayList<>();
@@ -26,7 +30,7 @@ public class AStarStrategy implements SnakeStrategy {
         Node headNode = new Node(head.getX(), head.getY());
         open.add(headNode);
 
-        Node current = open.get(0);
+        Node current = headNode;
         while (open.size() > 0) {
             //search for lowest fcost
             for (Node node : open) {
@@ -35,7 +39,7 @@ public class AStarStrategy implements SnakeStrategy {
                 }
             }
             //if reached target
-            if (current.distance(food) == 0)
+            if (current.getX() == food.getX() && current.getY() == food.getY())
                 break;
             //otherwise move current node to closed list
             open.remove(current);
@@ -44,32 +48,30 @@ public class AStarStrategy implements SnakeStrategy {
             // and expand frontier
             for (Direction d : Direction.values()) {
                 Square neighborSquare = head.moveTo(d);
-                Node neighborNode = new Node(neighborSquare.getX(),neighborSquare.getY());
+                Node neighborNode = new Node(neighborSquare, current, food);
                 //neighbor is not traversable or have already visited
-                if (neighborSquare.inBounds() || isInClosed(neighborNode))
-                    continue;
-                //determine if there is a shorter path from start node to neighborNode
-                // other than from current node
-                double movementCost = current.getFromStart() + current.distance(neighborSquare);
-                if (neighborNode.getFromStart() < movementCost || isNotInOpen(neighborNode)) {
-                    neighborNode.setParent(current);
-                    if(isNotInOpen(neighborNode))
-                    {
-                        open.add(neighborNode);
+                if (neighborSquare.inBounds() || isInClosed(neighborNode)) {
+
+                    //determine if there is a shorter path from start node to neighborNode
+                    // other than from current node
+                    //double movementCost = current.getFromStart() + current.distance(neighborSquare);
+                    //if (neighborNode.getFromStart() > movementCost || isNotInOpen(neighborNode)) {
+                      //  neighborNode.setParent(current);
+                        if (isNotInOpen(neighborNode)) {
+                            open.add(neighborNode);
+                       // }
                     }
                 }
             }
         }
         //set snake on the shortest path
-        shortestPath.add(current); //null pointer exception here
-        while(current.getParent()!= headNode)
-        {
+        shortestPath.add(closed.get(closed.size() - 1)); //null pointer exception here
+        while (current.getParent() != headNode) {
             shortestPath.add(current.getParent());
         }
 
         //there may be something very wrong with this loop...
-        for(int i = shortestPath.size()-1; i <= 0; i--)
-        {
+        for (int i = shortestPath.size() - 1; i <= 0; i--) {
             current = shortestPath.get(i);
             Direction direction = head.directionTo(current);
             snake.turnTo(direction);

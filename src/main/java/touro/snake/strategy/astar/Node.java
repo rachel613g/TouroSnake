@@ -34,7 +34,7 @@ public class Node extends Square {
         fromStart = (parent.fromStart+1) ;
     }
 
-    private void setEnd(Square square) {
+    public void setEnd(Square square) {
         fromEnd = distance(square);
     }
 
