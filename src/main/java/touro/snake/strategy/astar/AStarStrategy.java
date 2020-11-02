@@ -10,7 +10,6 @@ public class AStarStrategy implements SnakeStrategy {
     private Snake snake;
     private List<Node> closed;
     private List<Node> open;
-    private Node targetNode;
     private List<Node> shortestPath;
 
     @Override
@@ -22,88 +21,68 @@ public class AStarStrategy implements SnakeStrategy {
 
         if (food == null)
             return;
-        targetNode = new Node(food);
 
         closed = new ArrayList<>();
         open = new ArrayList<>();
 
-        Node headNode = new Node(head.getX(), head.getY());
-        open.add(headNode);
 
-        Node current = headNode;
+        open.add(new Node(head));
+
+
         while (open.size() > 0) {
-            //search for lowest fcost
-            for (Node node : open) {
-                if (node.getCost() < current.getCost()) {
-                    current = node;
-                }
-            }
+            Node current = getLowestFCost();
             //if reached target
-            if (current.getX() == food.getX() && current.getY() == food.getY())
+            if (current.equals(food)) {
+                Node firstChild = getFirstChild(head, current);
+                Direction direction = head.directionTo(firstChild);
+                snake.turnTo(direction);
                 break;
+            }
             //otherwise move current node to closed list
             open.remove(current);
             closed.add(current);
 
             // and expand frontier
             for (Direction d : Direction.values()) {
-                Square neighborSquare = head.moveTo(d);
-                Node neighborNode = new Node(neighborSquare, current, food);
+                Node neighbor = new Node(current.moveTo(d), current, food);
                 //neighbor is not traversable or have already visited
-                if (neighborSquare.inBounds() || isInClosed(neighborNode)) {
-
-                    //determine if there is a shorter path from start node to neighborNode
-                    // other than from current node
-                    //double movementCost = current.getFromStart() + current.distance(neighborSquare);
-                    //if (neighborNode.getFromStart() > movementCost || isNotInOpen(neighborNode)) {
-                      //  neighborNode.setParent(current);
-                        if (isNotInOpen(neighborNode)) {
-                            open.add(neighborNode);
-                       // }
-                    }
+                if (neighbor.inBounds() || closed.contains(neighbor) || snake.contains(neighbor)) {
+                    continue;
                 }
+                //determine if there is a shorter path from start node to neighbor
+                // other than from current node
+                int index = open.indexOf(neighbor);
+                if (index != -1) {
+                    Node oldNeighbor = open.get(index);
+                    if (neighbor.getCost() < oldNeighbor.getCost()) {
+                        open.remove(index);
+                        open.add(neighbor);
+                    }
+                } else open.add(neighbor);
+
             }
         }
-        //set snake on the shortest path
-        shortestPath.add(closed.get(closed.size() - 1)); //null pointer exception here
-        while (current.getParent() != headNode) {
-            shortestPath.add(current.getParent());
-        }
+    }
 
-        //there may be something very wrong with this loop...
-        for (int i = shortestPath.size() - 1; i <= 0; i--) {
-            current = shortestPath.get(i);
-            Direction direction = head.directionTo(current);
-            snake.turnTo(direction);
-            garden.advance();
-        }
-
+    private void setShortestPath(Node current) {
 
     }
 
-    private boolean isNotInOpen(Node neighborNode) {
+    private Node getLowestFCost() {
+        Node compare = open.get(0);
         for (Node node : open) {
-            if (node == neighborNode) {
-                return false;
+            if (node.getCost() < compare.getCost()) {
+                compare = node;
             }
         }
-        return true;
+        return compare;
     }
 
-    private boolean isInClosed(Node neighborNode) {
-        for (Node node : closed) {
-            if (node == neighborNode) {
-                return true;
-            }
+    public Node getFirstChild(Square head, Node end) {
+        Node n = end;
+        while (!n.getParent().equals(head)) {
+            n = n.getParent();
         }
-        return false;
-    }
-
-    private boolean inSnakeBody(Square neighborSquare) {
-        for (Square square : snake.getBody()) {
-            if (neighborSquare == square)
-                return true;
-        }
-        return false;
+        return n;
     }
 }
