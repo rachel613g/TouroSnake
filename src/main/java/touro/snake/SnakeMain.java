@@ -1,7 +1,6 @@
 package touro.snake;
 
-import touro.snake.strategy.SimpleStrategy;
-import touro.snake.strategy.astar.AStarStrategy;
+import touro.snake.strategy.astar.gutmann.AStarStrategy;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;

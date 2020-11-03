@@ -2,6 +2,8 @@ package touro.snake.strategy;
 
 import touro.snake.*;
 
+import java.util.List;
+
 /**
  * An implementation of SnakeStrategy that has no effect.
  */
@@ -27,5 +29,15 @@ public class SimpleStrategy implements SnakeStrategy {
         }
 
         snake.turnTo(bestDirection);
+    }
+
+    @Override
+    public List<Square> getPath() {
+        return null;
+    }
+
+    @Override
+    public List<Square> getSearchSpace() {
+        return null;
     }
 }
