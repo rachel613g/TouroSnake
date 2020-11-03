@@ -11,18 +11,25 @@ import java.util.*;
  * https://www.youtube.com/watch?v=-L-WgKMFuhE
  */
 public class AStarStrategy implements SnakeStrategy {
+    private List<Node> open;
+    private List<Node> closed;
+    private List<Square> shortestPath;
+    private Square head;
+    private Food food;
+
     @Override
     public void turnSnake(Snake snake, Garden garden) {
 
         Direction directions[] = Direction.values();
-        Food food = garden.getFood();
-        Square head = snake.getHead();
+        this.food = garden.getFood();
+        this.head = snake.getHead();
         if (food == null) {
             return;
         }
 
-        List<Node> open = new ArrayList<>();
-        List<Node> closed = new ArrayList<>();
+        open = new ArrayList<>();
+        closed = new ArrayList<>();
+        shortestPath = new ArrayList<>();
 
         open.add(new Node(snake.getHead()));
 
@@ -35,6 +42,12 @@ public class AStarStrategy implements SnakeStrategy {
                 Node firstChild = getFirstChild(head, current);
                 Direction direction = head.directionTo(firstChild);
                 snake.turnTo(direction);
+                setShortestPath(current);
+                if (head.equals(food))
+                {
+                    open.clear();
+                    closed.clear();
+                }
                 break;
             }
 
@@ -62,14 +75,26 @@ public class AStarStrategy implements SnakeStrategy {
 
     }
 
+    private void setShortestPath(Node current) {
+        while (!current.getParent().equals(head)) {
+            shortestPath.add(new Square (current.getX(), current.getY()));
+            current = current.getParent();
+        }
+    }
+
     @Override
     public List<Square> getPath() {
-        return Collections.emptyList();
+        return shortestPath;
     }
 
     @Override
     public List<Square> getSearchSpace() {
-        return Collections.emptyList();
+        List<Square> searchSpace = new ArrayList<>();
+        for (int i = 0; i < open.size(); i++)
+        {
+            searchSpace.add(open.get(i));
+        }
+        return searchSpace;
     }
 
     private Node getLowestCost(List<Node> nodes) {

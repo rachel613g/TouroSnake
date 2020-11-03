@@ -1,15 +1,13 @@
 package touro.snake;
 
 import org.junit.Test;
-import org.mockito.Mockito;
+import touro.snake.strategy.SnakeStrategy;
+import touro.snake.strategy.astar.schwimmer.AStarStrategy;
 
 import java.awt.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static javax.swing.JComponent.setDefaultLocale;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static touro.snake.GardenView.CELL_SIZE;
 
@@ -19,7 +17,8 @@ public class GardenViewTest {
     public void paintGrass() {
         //given
         Garden garden = mock(Garden.class);
-        GardenView view = new GardenView(garden);
+        SnakeStrategy snakeStrategy = mock(AStarStrategy.class);
+        GardenView view = new GardenView(garden, snakeStrategy);
         int width = view.getWidth();
         int height = view.getHeight();
 
@@ -37,7 +36,8 @@ public class GardenViewTest {
         //given
         Snake snake = mock(Snake.class);
         Garden garden = mock(Garden.class);
-        GardenView view = new GardenView(garden);
+        SnakeStrategy snakeStrategy = mock(AStarStrategy.class);
+        GardenView view = new GardenView(garden, snakeStrategy);
         Graphics g = mock(Graphics.class);
 
         List<Square> squares = List.of(
@@ -63,7 +63,8 @@ public class GardenViewTest {
     public void paintFood() {
         //given
         Garden garden = mock(Garden.class);
-        GardenView view = new GardenView(garden);
+        SnakeStrategy snakeStrategy = mock(AStarStrategy.class);
+        GardenView view = new GardenView(garden, snakeStrategy);
 
         when(garden.getFood()).thenReturn(mock(Food.class));
 
@@ -86,7 +87,8 @@ public class GardenViewTest {
     public void paintFood_nullFood() {
         //given
         Garden garden = mock(Garden.class);
-        GardenView view = new GardenView(garden);
+        SnakeStrategy snakeStrategy = mock(AStarStrategy.class);
+        GardenView view = new GardenView(garden, snakeStrategy);
         Graphics g = mock(Graphics.class);
 
         //when
