@@ -36,7 +36,7 @@ public class GardenView extends JComponent {
     }
 
     private void paintPath(Graphics g) {
-        g.setColor(Color.GRAY);
+        g.setColor(Color.YELLOW);
         for (Square s : snakeStrategy.getPath()) {
             g.fillRect(s.getX() * CELL_SIZE, s.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
