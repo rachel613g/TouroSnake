@@ -9,12 +9,10 @@ import java.awt.*;
 public class GardenView extends JComponent {
 
     private final Garden garden;
-    private final SnakeStrategy snakeStrategy;
     public static final int CELL_SIZE = 10;
 
-    public GardenView(Garden garden, SnakeStrategy snakeStrategy) {
+    public GardenView(Garden garden) {
         this.garden = garden;
-        this.snakeStrategy = snakeStrategy;
     }
 
     @Override
@@ -29,7 +27,7 @@ public class GardenView extends JComponent {
 
     private void paintOpen(Graphics g) {
         g.setColor(Color.CYAN);
-        for (Square s: snakeStrategy.getSearchSpace())
+        for (Square s: garden.getSnake().getStrategy().getSearchSpace())
         {
             g.fillRect(s.getX() * CELL_SIZE, s.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
@@ -37,7 +35,7 @@ public class GardenView extends JComponent {
 
     private void paintPath(Graphics g) {
         g.setColor(Color.YELLOW);
-        for (Square s : snakeStrategy.getPath()) {
+        for (Square s : garden.getSnake().getStrategy().getPath()) {
             g.fillRect(s.getX() * CELL_SIZE, s.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
     }
