@@ -42,7 +42,9 @@ public class Node extends Square {
         return fromStart * 7 + fromEnd;
     }
 
-    public double getFromStart() {
-        return fromStart;
+    @Override
+    public String toString() {
+        return String.format("Node{%d, %d = %f}", getX(), getY(), getCost());
+
     }
 }
