@@ -16,7 +16,7 @@ public class SnakeMain {
         // Set up all class dependencies here.
 
         SnakeHeadStateMachine snakeHeadStateMachine = new SnakeHeadStateMachine(Direction.West);
-        SnakeStrategy snakeStrategy = new AStarStrategy();
+        SnakeStrategy snakeStrategy = new BlankStrategy();
         Snake snake = new Snake(snakeHeadStateMachine, snakeStrategy);
         FoodFactory foodFactory = new FoodFactory();
         try {
