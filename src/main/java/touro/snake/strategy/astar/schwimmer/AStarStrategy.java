@@ -93,6 +93,7 @@ public class AStarStrategy implements SnakeStrategy {
         for (int i = 0; i < open.size(); i++)
         {
             searchSpace.add(open.get(i));
+            searchSpace.add(closed.get(i));
         }
         return searchSpace;
     }
