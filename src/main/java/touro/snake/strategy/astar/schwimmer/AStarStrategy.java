@@ -77,7 +77,7 @@ public class AStarStrategy implements SnakeStrategy {
 
     private void setShortestPath(Node current) {
         while (!current.getParent().equals(head)) {
-            shortestPath.add(new Square (current.getX(), current.getY()));
+            shortestPath.add(current.getParent());
             current = current.getParent();
         }
     }
