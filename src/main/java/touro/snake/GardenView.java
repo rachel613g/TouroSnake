@@ -1,5 +1,8 @@
 package touro.snake;
 
+import touro.snake.strategy.SnakeStrategy;
+import touro.snake.strategy.astar.schwimmer.AStarStrategy;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -18,6 +21,23 @@ public class GardenView extends JComponent {
         paintGrass(g);
         paintFood(g);
         paintSnake(g);
+        paintPath(g);
+        paintOpen(g);
+    }
+
+    private void paintOpen(Graphics g) {
+        g.setColor(Color.CYAN);
+        for (Square s: garden.getSnake().getStrategy().getSearchSpace())
+        {
+            g.fillRect(s.getX() * CELL_SIZE, s.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+    }
+
+    private void paintPath(Graphics g) {
+        g.setColor(Color.YELLOW);
+        for (Square s : garden.getSnake().getStrategy().getPath()) {
+            g.fillRect(s.getX() * CELL_SIZE, s.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
     }
 
     void paintGrass(Graphics g) {
@@ -29,7 +49,7 @@ public class GardenView extends JComponent {
     void paintSnake(Graphics g) {
         g.setColor(Color.RED);
         for (Square s : garden.getSnake().getSquares()) {
-            g.fillRect(s.getX()*CELL_SIZE, s.getY()*CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            g.fillRect(s.getX() * CELL_SIZE, s.getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
     }
 

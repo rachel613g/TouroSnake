@@ -1,15 +1,13 @@
 package touro.snake;
 
 import org.junit.Test;
-import org.mockito.Mockito;
+import touro.snake.strategy.SnakeStrategy;
+import touro.snake.strategy.astar.schwimmer.AStarStrategy;
 
 import java.awt.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static javax.swing.JComponent.setDefaultLocale;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static touro.snake.GardenView.CELL_SIZE;
 
