@@ -11,9 +11,9 @@ import java.util.*;
  * https://www.youtube.com/watch?v=-L-WgKMFuhE
  */
 public class AStarStrategy implements SnakeStrategy {
-    private List<Node> open;
-    private List<Node> closed;
-    private List<Square> shortestPath;
+    private List<Node> open = new ArrayList<>();;
+    private List<Node> closed = new ArrayList<>();;
+    private List<Square> shortestPath = new ArrayList<>();;
     private Square head;
     private Food food;
 
@@ -43,11 +43,6 @@ public class AStarStrategy implements SnakeStrategy {
                 Direction direction = head.directionTo(firstChild);
                 snake.turnTo(direction);
                 setShortestPath(current);
-                if (head.equals(food))
-                {
-                    open.clear();
-                    closed.clear();
-                }
                 break;
             }
 
@@ -89,12 +84,9 @@ public class AStarStrategy implements SnakeStrategy {
 
     @Override
     public List<Square> getSearchSpace() {
-        List<Square> searchSpace = new ArrayList<>();
-        for (int i = 0; i < open.size(); i++)
-        {
-            searchSpace.add(open.get(i));
-            searchSpace.add(closed.get(i));
-        }
+        List<Square> searchSpace = List.copyOf(closed);
+        int indexOfFood = searchSpace.indexOf(food);
+        searchSpace.remove(indexOfFood);
         return searchSpace;
     }
 

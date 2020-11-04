@@ -21,8 +21,8 @@ public class GardenView extends JComponent {
         paintGrass(g);
         paintFood(g);
         paintSnake(g);
-        paintPath(g);
         paintOpen(g);
+        paintPath(g);
     }
 
     private void paintOpen(Graphics g) {
