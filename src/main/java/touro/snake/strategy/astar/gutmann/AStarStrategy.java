@@ -12,6 +12,7 @@ public class AStarStrategy implements SnakeStrategy {
     private List<Node> open;
     private Square head;
     private Food food;
+    private Snake snake;
     private List<Square> shortestPath;
     private Direction directions[] = Direction.values();
 
@@ -20,6 +21,7 @@ public class AStarStrategy implements SnakeStrategy {
 
         this.head = snake.getHead();
         this.food = garden.getFood();
+        this.snake = snake;
 
         if (food == null) {
             return;
@@ -28,46 +30,50 @@ public class AStarStrategy implements SnakeStrategy {
         closed = new ArrayList<>();
         open = new ArrayList<>();
 
-
         open.add(new Node(head));
-
 
         while (!open.isEmpty()) {
             Node current = getLowestFCost();
 
-            //if reached target
             if (current.equals(food)) {
-                Node firstChild = getFirstChild(head, current);
-                Direction direction = head.directionTo(firstChild);
-                setShortestPath(current);
-                snake.turnTo(direction);
+                reachedTarget(snake, current);
                 break;
             }
             //otherwise move current node to closed list
             open.remove(current);
             closed.add(current);
 
-            // and expand frontier
-            for (Direction d : Direction.values()) {
-                Node neighbor = new Node(current.moveTo(d), current, food);
-                //neighbor is not traversable or have already visited
-                if (!neighbor.inBounds() || closed.contains(neighbor) || snake.contains(neighbor)) {
-                    continue;
-                }
-                //determine if there is a shorter path from start node to neighbor
-                // other than from current node
-                int index = open.indexOf(neighbor);
-                if (index != -1) {
-                    Node oldNeighbor = open.get(index);
-                    if (neighbor.getCost() < oldNeighbor.getCost()) {
-                        open.remove(index);
-                        open.add(neighbor);
-                    }
-                } else {
+            expandFrontier(current);
+        }
+    }
+
+    private void expandFrontier(Node current) {
+        for (Direction d : Direction.values()) {
+            Node neighbor = new Node(current.moveTo(d), current, food);
+            //neighbor is not traversable or have already visited
+            if (!neighbor.inBounds() || closed.contains(neighbor) || snake.contains(neighbor)) {
+                continue;
+            }
+            //determine if there is a shorter path from start node to neighbor
+            // other than from current node
+            int index = open.indexOf(neighbor);
+            if (index != -1) {
+                Node oldNeighbor = open.get(index);
+                if (neighbor.getCost() < oldNeighbor.getCost()) {
+                    open.remove(index);
                     open.add(neighbor);
                 }
+            } else {
+                open.add(neighbor);
             }
         }
+    }
+
+    private void reachedTarget(Snake snake, Node current) {
+        Node firstChild = getFirstChild(head, current);
+        Direction direction = head.directionTo(firstChild);
+        setShortestPath(current);
+        snake.turnTo(direction);
     }
 
     @Override
