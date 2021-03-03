@@ -1,10 +1,9 @@
 package touro.snake;
 
-
+import touro.snake.strategy.BlankStrategy;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.awt.*;
 import java.io.InputStream;
 
 public class SnakeMain {
@@ -14,7 +13,7 @@ public class SnakeMain {
         // Set up all class dependencies here.
 
         SnakeHeadStateMachine snakeHeadStateMachine = new SnakeHeadStateMachine(Direction.West);
-        Snake snake = new Snake(snakeHeadStateMachine);
+        Snake snake = new Snake(snakeHeadStateMachine, new BlankStrategy());
         FoodFactory foodFactory = new FoodFactory();
 
         try {
@@ -30,8 +29,10 @@ public class SnakeMain {
             GardenThread thread = new GardenThread(garden, gardenView);
             thread.start();
             BackgroundSound backgroundSound = new BackgroundSound();
+
             new SnakeFrame(gardenView, snakeKeyListener, snakeMouseListener,backgroundSound).setVisible(true);
         } catch(Exception e) {
+
             e.printStackTrace();
         }
     }

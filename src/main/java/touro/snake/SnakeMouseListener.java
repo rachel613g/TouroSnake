@@ -19,7 +19,7 @@ public class SnakeMouseListener extends MouseMotionAdapter {
         //to scale of mouse position (MouseEvent object) numbers
 
         //logic taken from https://bit.ly/36Gu7GG
-        //determine x and y values of the slope of line between mouse position
+        //determine slope of line between mouse position
         //and snake head position
         final int CELL_SIZE = 10;
         int deltaX = e.getX() - (snake.getHead().getX() * CELL_SIZE);
